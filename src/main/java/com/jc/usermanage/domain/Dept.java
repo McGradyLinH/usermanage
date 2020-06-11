@@ -1,6 +1,7 @@
 package com.jc.usermanage.domain;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @author LinXing
@@ -8,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * @desc TODO
  * @date 2020/6/11 9:50
  */
-public class Dept {
+public class Dept implements Serializable {
 
     private Integer dept_id;
     @NotNull

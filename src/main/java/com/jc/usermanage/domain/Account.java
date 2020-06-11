@@ -1,5 +1,6 @@
 package com.jc.usermanage.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -9,7 +10,9 @@ import java.time.LocalDateTime;
  * @desc TODO
  * @date 2020/6/11 15:05
  */
-public class Account {
+public class Account implements Serializable {
+    private static final long serialVersionUID = -5799039131156124290L;
+
     private Integer user_id;
     private UserInfo info;
     private Dept dept;

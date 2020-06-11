@@ -3,6 +3,7 @@ package com.jc.usermanage.domain;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -11,8 +12,9 @@ import java.time.LocalDateTime;
  * @desc TODO
  * @date 2020/6/11 9:50
  */
-public class Status {
+public class Status implements Serializable {
 
+    private static final long serialVersionUID = -5196723866033322663L;
     private Integer status_id;
     @NotBlank
     private String status;

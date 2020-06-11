@@ -1,12 +1,15 @@
 package com.jc.usermanage.domain;
 
+import java.io.Serializable;
+
 /**
  * @author LinXing
  * @version 1.0
  * @desc TODO
  * @date 2020/6/11 9:52
  */
-public class UserPermission {
+public class UserPermission implements Serializable {
+    private static final long serialVersionUID = -3277014786392737579L;
 
     private Integer permission_id;
     private String role_name;

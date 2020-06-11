@@ -2,6 +2,7 @@ package com.jc.usermanage.domain;
 
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -11,7 +12,9 @@ import java.time.LocalDateTime;
  * @desc TODO
  * @date 2020/6/11 9:47
  */
-public class UserInfo {
+public class UserInfo implements Serializable {
+    private static final long serialVersionUID = -7964255300734848683L;
+
     private Integer user_info_id;
     private String name;
     @NotNull(message = "电话号码不能为空！")
