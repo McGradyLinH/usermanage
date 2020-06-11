@@ -35,7 +35,7 @@ class UsermanageApplicationTests {
     void deptInsert() {
         Dept dept = new Dept();
         dept.setDept_name("test");
-//        dept.setDept_address("玉沙路");
+        dept.setDept_address("玉沙路");
         try {
             ValidationUtils.validate(dept);
             Dept dept1 = deptService.insert(dept);
@@ -52,7 +52,7 @@ class UsermanageApplicationTests {
 
         UserInfo userInfo = new UserInfo();
         userInfo.setUser_info_id(0);
-        userInfo.setName("test1");
+        userInfo.setName("test");
         userInfo.setEmail("123456789@qq.com");
         userInfo.setAge(22);
         userInfo.setSex(true);
@@ -61,6 +61,7 @@ class UsermanageApplicationTests {
         userInfo.setPhone("13333333333");
         String s = DigestUtils.md5DigestAsHex("123456".getBytes());
         userInfo.setUser_pwd(s);
+        account.setInfo(userInfo);
         Dept dept = new Dept();
         dept.setDept_name("test");
         dept.setDept_id(1);
@@ -68,15 +69,11 @@ class UsermanageApplicationTests {
         account.setDept(dept);
         try {
             ValidationUtils.validate(userInfo);
-            UserInfo insert = userInfoService.insert(userInfo);
-            account.setInfo(insert);
-
             Status status = new Status();
             status.setStatus("在职");
             status.setStart_time(LocalDateTime.of(2019, 3, 23, 8, 30, 0));
             status.setEnd_time(LocalDateTime.of(2022, 3, 23, 8, 30, 0));
             ValidationUtils.validate(status);
-            statusService.insert(status);
             account.setStatus(status);
             userService.insert(account);
         } catch (Exception e) {
