@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jc.usermanage.dao.TbStatusDao">
+
+    <resultMap type="com.jc.usermanage.domain.Status" id="TbStatusMap">
+        <result property="status_id" column="status_id" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="start_time" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="end_time" column="end_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TbStatusMap">
+        select
+          status_id, status, start_time, end_time
+        from user_manager.tb_status
+        where status_id = #{status_id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TbStatusMap">
+        select
+          status_id, status, start_time, end_time
+        from user_manager.tb_status
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TbStatusMap">
+        select
+          status_id, status, start_time, end_time
+        from user_manager.tb_status
+        <where>
+            <if test="status_id != null">
+                and status_id = #{status_id}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="start_time != null">
+                and start_time = #{start_time}
+            </if>
+            <if test="end_time != null">
+                and end_time = #{end_time}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="status_id" useGeneratedKeys="true">
+        insert into user_manager.tb_status(status, start_time, end_time)
+        values (#{status}, #{start_time}, #{end_time})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user_manager.tb_status
+        <set>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="start_time != null">
+                start_time = #{start_time},
+            </if>
+            <if test="end_time != null">
+                end_time = #{end_time},
+            </if>
+        </set>
+        where status_id = #{status_id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user_manager.tb_status where status_id = #{status_id}
+    </delete>
+
+</mapper>

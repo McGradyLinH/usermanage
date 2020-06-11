@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jc.usermanage.dao.TbUserInfoDao">
+
+    <resultMap type="com.jc.usermanage.domain.UserInfo" id="TbUserInfoMap">
+        <result property="user_info_id" column="user_info_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="sex" column="sex" jdbcType="BOOLEAN"/>
+        <result property="birth_time" column="birth_time" jdbcType="TIMESTAMP"/>
+        <result property="user_pwd" column="user_pwd" jdbcType="VARCHAR"/>
+        <result property="balance" column="balance" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TbUserInfoMap">
+        select
+          user_info_id, name, phone, email, age, sex, birth_time, user_pwd, balance
+        from user_manager.tb_user_info
+        where user_info_id = #{_parameter}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TbUserInfoMap">
+        select
+          user_info_id, name, phone, email, age, sex, birth_time, user_pwd, balance
+        from user_manager.tb_user_info
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TbUserInfoMap">
+        select
+          user_info_id, name, phone, email, age, sex, birth_time, user_pwd, balance
+        from user_manager.tb_user_info
+        <where>
+            <if test="user_info_id != null">
+                and user_info_id = #{user_info_id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+            <if test="birth_time != null">
+                and birth_time = #{birth_time}
+            </if>
+            <if test="user_pwd != null and user_pwd != ''">
+                and user_pwd = #{user_pwd}
+            </if>
+            <if test="balance != null">
+                and balance = #{balance}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="user_info_id" useGeneratedKeys="true">
+        insert into user_manager.tb_user_info(name, phone, email, age, sex, birth_time, user_pwd, balance)
+        values (#{name}, #{phone}, #{email}, #{age}, #{sex}, #{birth_time}, #{user_pwd}, #{balance})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user_manager.tb_user_info
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="birth_time != null">
+                birth_time = #{birth_time},
+            </if>
+            <if test="user_pwd != null and user_pwd != ''">
+                user_pwd = #{user_pwd},
+            </if>
+            <if test="balance != null">
+                balance = #{balance},
+            </if>
+        </set>
+        where user_info_id = #{user_info_id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user_manager.tb_user_info where user_info_id = #{_parameter}
+    </delete>
+
+</mapper>

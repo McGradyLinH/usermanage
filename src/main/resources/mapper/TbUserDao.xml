@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jc.usermanage.dao.TbUserDao">
+
+    <resultMap type="com.jc.usermanage.domain.User" id="TbUserMap">
+        <result property="user_id" column="user_id" jdbcType="INTEGER"/>
+        <result property="user_dept_id" column="user_dept_id" jdbcType="INTEGER"/>
+        <result property="user_info_id" column="user_info_id" jdbcType="INTEGER"/>
+        <result property="user_status_id" column="user_status_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="accountMap" type="com.jc.usermanage.domain.Account">
+        <result property="user_id" column="user_id" jdbcType="INTEGER"/>
+        <collection property="dept" ofType="com.jc.usermanage.domain.Dept">
+            <result property="dept_id" column="dept_id" jdbcType="INTEGER"/>
+            <result property="dept_name" column="dept_name" jdbcType="VARCHAR"/>
+            <result property="dept_address" column="dept_address" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="info" ofType="com.jc.usermanage.domain.UserInfo">
+            <result property="user_info_id" column="user_info_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+            <result property="sex" column="sex" jdbcType="BOOLEAN"/>
+            <result property="birth_time" column="birth_time" jdbcType="TIMESTAMP"/>
+            <result property="user_pwd" column="user_pwd" jdbcType="VARCHAR"/>
+            <result property="balance" column="balance" jdbcType="OTHER"/>
+        </collection>
+        <collection property="status" ofType="com.jc.usermanage.domain.Status">
+            <result property="status_id" column="status_id" jdbcType="INTEGER"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="start_time" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="end_time" column="end_time" jdbcType="TIMESTAMP"/>
+        </collection>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        user_id, user_dept_id, user_info_id, user_status_id
+    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TbUserMap">
+        select
+          <include refid="Base_Column_List"/>
+        from user_manager.tb_user
+        where user_info_id = #{_parameter}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TbUserMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_manager.tb_user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TbUserMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_manager.tb_user
+        <where>
+            <if test="user_id != null">
+                and user_id = #{user_id}
+            </if>
+            <if test="user_dept_id != null">
+                and user_dept_id = #{user_dept_id}
+            </if>
+            <if test="user_info_id != null">
+                and user_info_id = #{user_info_id}
+            </if>
+            <if test="user_status_id != null">
+                and user_status_id = #{user_status_id}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="user_id" useGeneratedKeys="true">
+        insert into user_manager.tb_user(user_dept_id, user_info_id, user_status_id)
+        values (#{user_dept_id}, #{user_info_id}, #{user_status_id})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user_manager.tb_user
+        <set>
+            <if test="user_dept_id != null">
+                user_dept_id = #{user_dept_id},
+            </if>
+            <if test="user_info_id != null">
+                user_info_id = #{user_info_id},
+            </if>
+            <if test="user_status_id != null">
+                user_status_id = #{user_status_id},
+            </if>
+        </set>
+        where user_id = #{user_id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user_manager.tb_user where user_id = #{user_id}
+    </delete>
+
+    <!--查询所有用户的所有信息-->
+    <select id="queryAllAccount" resultMap="accountMap">
+        SELECT
+            tu.user_id,
+            td.*, tui.*, ts.*
+        FROM
+            user_manager.tb_user tu
+        LEFT JOIN user_manager.tb_dept td ON tu.user_dept_id = td.dept_id
+        LEFT JOIN user_manager.tb_user_info tui ON tu.user_info_id = tui.user_info_id
+        LEFT JOIN user_manager.tb_status ts ON tu.user_status_id = ts.status_id
+    </select>
+
+</mapper>
