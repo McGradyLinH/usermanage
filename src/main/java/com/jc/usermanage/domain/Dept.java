@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @date 2020/6/11 9:50
  */
 public class Dept implements Serializable {
+    private static final long serialVersionUID = 5341763463453113672L;
 
     private Integer dept_id;
     @NotNull
