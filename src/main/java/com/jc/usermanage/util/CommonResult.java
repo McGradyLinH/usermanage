@@ -2,6 +2,7 @@ package com.jc.usermanage.util;
 
 /**
  * 统一的返回对象
+ *
  * @author lx
  * @version 1.0
  * @date 2020/6/11 23:08
@@ -24,8 +25,7 @@ public class CommonResult<T> {
     }
 
     public CommonResult(Integer code, String message) {
-        this.code = code;
-        this.message = message;
+        this(code, message, null);
     }
 
     public CommonResult(Integer code, String message, T data) {
