@@ -7,6 +7,8 @@ import com.jc.usermanage.dao.TbUserInfoDao;
 import com.jc.usermanage.domain.*;
 import com.jc.usermanage.service.TbUserService;
 import com.jc.usermanage.util.ValidationUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -22,6 +24,8 @@ import java.util.List;
  */
 @Service("tbUserService")
 public class TbUserServiceImpl implements TbUserService {
+    private static final Logger logger = LoggerFactory.getLogger(TbUserServiceImpl.class);;
+
     @Resource
     private TbUserDao tbUserDao;
 
@@ -119,7 +123,6 @@ public class TbUserServiceImpl implements TbUserService {
             ValidationUtils.validate(userInfo);
             List<UserInfo> userInfos = tbUserInfoDao.queryAll(userInfo);
             if (!userInfos.isEmpty()) {
-                System.out.println("登录成功！");
                 UserInfo info = userInfos.get(0);
                 User user = tbUserDao.queryById(info.getUser_info_id());
                 account.setUser_id(user.getUser_id());
@@ -128,12 +131,13 @@ public class TbUserServiceImpl implements TbUserService {
                 account.setDept(dept);
                 Status status = tbStatusDao.queryById(user.getUser_status_id());
                 account.setStatus(status);
+                return account;
             } else{
-                System.out.println("用户名或密码错误！");
+                return null;
             }
         } catch (Exception e) {
-            System.out.println("参数校验失败！");
+            logger.error("查询异常-> {}",e.getMessage());
         }
-        return account;
+        return null;
     }
 }
