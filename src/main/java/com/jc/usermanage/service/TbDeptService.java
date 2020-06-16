@@ -22,6 +22,14 @@ public interface TbDeptService {
     Dept queryById(Integer deptId);
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param dept 实例对象
+     * @return 对象列表
+     */
+    List<Dept> queryAll(Dept dept);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

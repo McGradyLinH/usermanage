@@ -1,6 +1,8 @@
 package com.jc.usermanage.domain;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -24,6 +26,7 @@ public class UserInfo implements Serializable {
     private String email;
     private Integer age;
     private Boolean sex;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime birth_time;
     private String user_pwd;
     private BigDecimal balance;

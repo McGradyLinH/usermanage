@@ -17,6 +17,7 @@ public class Account implements Serializable {
     private UserInfo info;
     private Dept dept;
     private Status status;
+    private TbCompany tbCompany;
 
     public UserInfo getInfo() {
         return info;
@@ -50,6 +51,14 @@ public class Account implements Serializable {
         this.user_id = user_id;
     }
 
+    public TbCompany getTbCompany() {
+        return tbCompany;
+    }
+
+    public void setTbCompany(TbCompany tbCompany) {
+        this.tbCompany = tbCompany;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
@@ -57,6 +66,7 @@ public class Account implements Serializable {
                 ", info=" + info +
                 ", dept=" + dept +
                 ", status=" + status +
+                ", tbCompany=" + tbCompany +
                 '}';
     }
 }

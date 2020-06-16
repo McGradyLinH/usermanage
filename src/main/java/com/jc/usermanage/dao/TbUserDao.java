@@ -67,6 +67,13 @@ public interface TbUserDao {
      * 查询所有用户数据
      * @return 对象列表
      */
-    List<Account> queryAllAccount();
+    List<Account> queryAllAccount(String companyId);
+
+    /**
+     * 查询单条记录
+     * @param userId 员工id
+     * @return 员工所有信息
+     */
+    Account queryByUserId(Integer userId);
 
 }

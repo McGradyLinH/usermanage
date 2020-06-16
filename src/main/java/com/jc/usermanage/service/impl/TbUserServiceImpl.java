@@ -1,9 +1,6 @@
 package com.jc.usermanage.service.impl;
 
-import com.jc.usermanage.dao.TbDeptDao;
-import com.jc.usermanage.dao.TbStatusDao;
-import com.jc.usermanage.dao.TbUserDao;
-import com.jc.usermanage.dao.TbUserInfoDao;
+import com.jc.usermanage.dao.*;
 import com.jc.usermanage.domain.*;
 import com.jc.usermanage.service.TbUserService;
 import com.jc.usermanage.util.ValidationUtils;
@@ -24,7 +21,8 @@ import java.util.List;
  */
 @Service("tbUserService")
 public class TbUserServiceImpl implements TbUserService {
-    private static final Logger logger = LoggerFactory.getLogger(TbUserServiceImpl.class);;
+    private static final Logger logger = LoggerFactory.getLogger(TbUserServiceImpl.class);
+    ;
 
     @Resource
     private TbUserDao tbUserDao;
@@ -37,6 +35,9 @@ public class TbUserServiceImpl implements TbUserService {
 
     @Resource
     private TbDeptDao tbDeptDao;
+
+    @Resource
+    private TbCompanyDao tbCompanyDao;
 
     /**
      * 通过ID查询单条数据
@@ -53,7 +54,7 @@ public class TbUserServiceImpl implements TbUserService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
     @Override
@@ -62,8 +63,8 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public List<Account> queryAllAccount() {
-        return tbUserDao.queryAllAccount();
+    public List<Account> queryAllAccount(String companyId) {
+        return tbUserDao.queryAllAccount(companyId);
     }
 
     /**
@@ -83,20 +84,32 @@ public class TbUserServiceImpl implements TbUserService {
         Status status = account.getStatus();
         tbStatusDao.insert(status);
         user.setUser_status_id(status.getStatus_id());
-        this.tbUserDao.insert(user);
+        int insert = this.tbUserDao.insert(user);
+        if (insert == 0) {
+            logger.info("新增失败！");
+            return null;
+        }
         return user;
     }
 
     /**
      * 修改数据
      *
-     * @param tbUser 实例对象
+     * @param account 实例对象
      * @return 实例对象
      */
     @Override
-    public User update(User tbUser) {
-        this.tbUserDao.update(tbUser);
-        return this.queryById(tbUser.getUser_id());
+    @Transactional
+    public void update(Account account) {
+        User user = new User();
+        user.setUser_dept_id(account.getDept().getDept_id());
+        user.setUser_id(account.getUser_id());
+        this.tbUserDao.update(user);
+        //修改emp基本信息
+        tbUserInfoDao.update(account.getInfo());
+        //修改emp状态信息
+        tbStatusDao.update(account.getStatus());
+
     }
 
     /**
@@ -131,13 +144,20 @@ public class TbUserServiceImpl implements TbUserService {
                 account.setDept(dept);
                 Status status = tbStatusDao.queryById(user.getUser_status_id());
                 account.setStatus(status);
+                TbCompany tbCompany = tbCompanyDao.queryById(user.getUser_company_id());
+                account.setTbCompany(tbCompany);
                 return account;
-            } else{
+            } else {
                 return null;
             }
         } catch (Exception e) {
-            logger.error("查询异常-> {}",e.getMessage());
+            logger.error("查询异常-> {}", e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public Account queryByUserId(Integer userId) {
+        return tbUserDao.queryByUserId(userId);
     }
 }

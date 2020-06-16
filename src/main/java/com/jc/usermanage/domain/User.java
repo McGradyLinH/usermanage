@@ -29,6 +29,11 @@ public class User implements Serializable {
      */
     private Integer user_status_id;
 
+    /**
+     * 用户公司id
+     */
+    private Integer user_company_id;
+
     public Integer getUser_id() {
         return user_id;
     }
@@ -59,5 +64,13 @@ public class User implements Serializable {
 
     public void setUser_status_id(Integer user_status_id) {
         this.user_status_id = user_status_id;
+    }
+
+    public Integer getUser_company_id() {
+        return user_company_id;
+    }
+
+    public void setUser_company_id(Integer user_company_id) {
+        this.user_company_id = user_company_id;
     }
 }

@@ -30,6 +30,11 @@ public class TbDeptServiceImpl implements TbDeptService {
         return this.tbDeptDao.queryById(deptId);
     }
 
+    @Override
+    public List<Dept> queryAll(Dept dept) {
+        return tbDeptDao.queryAll(dept);
+    }
+
     /**
      * 查询多条数据
      *

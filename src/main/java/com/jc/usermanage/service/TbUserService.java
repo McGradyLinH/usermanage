@@ -34,7 +34,7 @@ public interface TbUserService {
      *
      * @return 对象列表
      */
-    List<Account> queryAllAccount();
+    List<Account> queryAllAccount(String companyId);
 
     /**
      * 新增数据
@@ -47,10 +47,10 @@ public interface TbUserService {
     /**
      * 修改数据
      *
-     * @param tbUser 实例对象
+     * @param account 实例对象
      * @return 实例对象
      */
-    User update(User tbUser);
+    void update(Account account);
 
     /**
      * 通过主键删除数据
@@ -67,5 +67,12 @@ public interface TbUserService {
      * @return 该用户的所有信息
      */
     Account login(String phone,String pwd);
+
+    /**
+     * 查询单条记录
+     * @param userId 员工id
+     * @return 员工所有信息
+     */
+    Account queryByUserId(Integer userId);
 
 }
