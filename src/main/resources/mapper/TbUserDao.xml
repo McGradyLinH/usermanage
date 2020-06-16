@@ -7,6 +7,7 @@
         <result property="user_dept_id" column="user_dept_id" jdbcType="INTEGER"/>
         <result property="user_info_id" column="user_info_id" jdbcType="INTEGER"/>
         <result property="user_status_id" column="user_status_id" jdbcType="INTEGER"/>
+        <result property="user_company_id" column="user_company_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="accountMap" type="com.jc.usermanage.domain.Account">
@@ -33,16 +34,21 @@
             <result property="start_time" column="start_time" jdbcType="TIMESTAMP"/>
             <result property="end_time" column="end_time" jdbcType="TIMESTAMP"/>
         </collection>
+        <collection property="tbCompany" ofType="com.jc.usermanage.domain.TbCompany">
+            <result property="companyId" column="company_id" jdbcType="INTEGER"/>
+            <result property="companyname" column="companyName" jdbcType="VARCHAR"/>
+            <result property="companylocation" column="companyLocation" jdbcType="VARCHAR"/>
+        </collection>
     </resultMap>
-    
+
     <sql id="Base_Column_List">
-        user_id, user_dept_id, user_info_id, user_status_id
+        user_id, user_dept_id, user_info_id, user_status_id, user_company_id
     </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="TbUserMap">
         select
-          <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List"/>
         from user_manager.tb_user
         where user_info_id = #{_parameter}
     </select>
@@ -108,12 +114,37 @@
     <select id="queryAllAccount" resultMap="accountMap">
         SELECT
             tu.user_id,
-            td.*, tui.*, ts.*
+            td.*, tui.*, ts.*, tc.*
         FROM
             user_manager.tb_user tu
         LEFT JOIN user_manager.tb_dept td ON tu.user_dept_id = td.dept_id
         LEFT JOIN user_manager.tb_user_info tui ON tu.user_info_id = tui.user_info_id
         LEFT JOIN user_manager.tb_status ts ON tu.user_status_id = ts.status_id
+        LEFT JOIN user_manager.tb_company tc ON tu.user_company_id = tc.company_id
+        <where>
+            1 = 1
+            <if test="_parameter != null and _parameter != '' ">
+                and tu.user_company_id = #{_parameter}
+            </if>
+        </where>
     </select>
 
+    <!--查询单个-->
+    <select id="queryByUserId" resultMap="accountMap">
+        SELECT
+        tu.user_id,
+        td.*, tui.*, ts.*, tc.*
+        FROM
+        user_manager.tb_user tu
+        LEFT JOIN user_manager.tb_dept td ON tu.user_dept_id = td.dept_id
+        LEFT JOIN user_manager.tb_user_info tui ON tu.user_info_id = tui.user_info_id
+        LEFT JOIN user_manager.tb_status ts ON tu.user_status_id = ts.status_id
+        LEFT JOIN user_manager.tb_company tc ON tu.user_company_id = tc.company_id
+        <where>
+            1 = 1
+            <if test="_parameter != null and _parameter != '' ">
+                and tu.user_id = #{_parameter}
+            </if>
+        </where>
+    </select>
 </mapper>
