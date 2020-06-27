@@ -75,4 +75,11 @@ public interface TbUserService {
      */
     Account queryByUserId(Integer userId);
 
+    /**
+     * excel 导入使用的添加方法
+     * @param account 人员信息
+     * @return 是否成功
+     */
+    int insertapart(Account account);
+
 }

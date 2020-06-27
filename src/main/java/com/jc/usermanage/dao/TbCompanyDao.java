@@ -62,4 +62,12 @@ public interface TbCompanyDao {
      */
     int deleteById(Integer companyId);
 
+    /**
+     * 通过公司名称查询单条数据
+     *
+     * @param companyName 公司名称
+     * @return 实例对象
+     */
+    TbCompany queryByName(String companyName);
+
 }

@@ -20,7 +20,11 @@
 				<!--<div th:replace="common/bar :: sidebar(active='emps')"></div>-->
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-12 pt-3 px-4">
-					<!--<h2><a th:href="@{/toAddPage}" class="btn btn-sm btn-success">添加员工</a></h2>-->
+					<h2><a th:href="@{/toAddPage}" class="btn btn-sm btn-success">添加员工</a></h2>
+					<form th:action="@{/emp/upload}" enctype="multipart/form-data" method="post">
+						<input type="file" name="empExcel" id="empExcel"/>
+						<button type="submit" class="btn btn-sm btn-success">上传Excel</button>
+					</form>
 					<div class="table-responsive">
 						<table class="table table-striped table-sm">
 							<thead>
@@ -43,7 +47,7 @@
 									<td th:text="${emp.info.phone}">ipsum</td>
 									<td th:text="${emp.info.email}">ipsum</td>
 									<td th:text="${emp.info.sex} ? 'female':'male'">dolor</td>
-									<td th:text="${emp.dept.dept_name}">sit</td>
+									<td th:if="${#strings.isEmpty(emp.dept.dept_name)}" th:text="${emp.dept.dept_name}">sit</td>
 									<!--<td th:text="${#dates.format(emp.info.birth_time,'yyyy-MM-dd HH:mm')}">sit</td>-->
 									<td th:text="${emp.info.birth_time}">sit</td>
 									<td th:text="${emp.status.status}">sit</td>

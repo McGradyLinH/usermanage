@@ -29,6 +29,14 @@ public interface TbCompanyService {
     List<TbCompany> queryAllByLimit(int offset, int limit);
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param tbCompany 实例对象
+     * @return 对象列表
+     */
+    List<TbCompany> queryAll(TbCompany tbCompany);
+
+    /**
      * 新增数据
      *
      * @param tbCompany 实例对象
@@ -51,5 +59,13 @@ public interface TbCompanyService {
      * @return 是否成功
      */
     boolean deleteById(Integer companyId);
+
+    /**
+     * 通过公司名称查询单条数据
+     *
+     * @param companyName 公司名称
+     * @return 实例对象
+     */
+    TbCompany queryByName(String companyName);
 
 }

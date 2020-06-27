@@ -1,90 +1,137 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<title>Dashboard Template for Bootstrap</title>
-		<!-- Bootstrap core CSS -->
-		<link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
-		<!-- Custom styles for this template -->
-		<link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
-	</head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>添加员工</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
 
-	<body>
-		<div th:replace="common/bar :: #topbar"></div>
+<body>
+<!--<div th:replace="common/bar :: #topbar"></div>-->
 
-		<div class="container-fluid">
-			<div class="row">
-				<div th:replace="common/bar :: sidebar(active='emps')"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!--<div th:replace="common/bar :: sidebar(active='emps')"></div>-->
 
-				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-					<form th:action="@{/emp}" method="post">
-						<div class="form-group">
-							<label for="lastName">lastName</label>
-							<input type="text" name="lastName" class="form-control" id="lastName">
-						</div>
-						<div class="form-group">
-							<label for="email">Email address</label>
-							<input type="email" name="email" class="form-control" id="email" placeholder="name@example.com">
-						</div>
-						<div class="form-group">
-							<label for="gender">gender</label>
-							<select class="form-control" name="gender" id="gender">
-								<option value="1">male</option>
-								<option value="0">female</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="department">department</label>
-							<select class="form-control" name="department.id" id="department">
-								<option th:each="dept : ${depts}" th:value="${dept.id}" th:text="${dept.departmentName}"></option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="birth">lastName</label>
-							<input type="date" name="birth" class="form-control" id="birth">
-						</div>
-						<!--<div class="form-group">
-							<label for="exampleFormControlSelect2">Example multiple select</label>
-							<select multiple class="form-control" id="exampleFormControlSelect2">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="exampleFormControlTextarea1">Example textarea</label>
-							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-						</div>-->
-						<button class="btn btn-primary" type="submit">增加</button>
-					</form>
-				</main>
-			</div>
-		</div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-12 pt-3 px-4">
+            <form th:action="@{/emp}" method="post">
+                <input type="hidden" name="user_id"/>
+                <input type="hidden" name="info.user_info_id"/>
+                <input type="hidden" name="status.status_id"/>
 
-		<!-- Bootstrap core JavaScript
-    ================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" th:src="@{/asserts/js/jquery-3.2.1.slim.min.js}"></script>
-		<script type="text/javascript" th:src="@{/asserts/js/popper.min.js}"></script>
-		<script type="text/javascript" th:src="@{/asserts/js/bootstrap.min.js}"></script>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="lastName">name</label>
+                        <input type="text" name="info.name" class="form-control" id="lastName" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="phone">phone</label>
+                        <input type="text" name="info.phone" class="form-control" id="phone" required>
+                    </div>
+                </div>
 
-		<!-- Icons -->
-		<script type="text/javascript" th:src="@{/asserts/js/feather.min.js}"></script>
-		<script>
-			feather.replace()
-		</script>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="email">Email address</label>
+                        <input type="email" name="info.email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="gender">gender</label>
+                        <select class="form-control" name="info.sex" id="gender" required>
+                            <option value="1">female</option>
+                            <option value="0">male</option>
+                        </select>
+                    </div>
+                </div>
 
-		<!-- Graphs -->
-		<script type="text/javascript" th:src="@{/asserts/js/Chart.min.js}"></script>
-		<script>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="birthTime">birthTime</label>
+                        <input autoComplete='off' name="birthTime" data-link-field="dtp_input2" id="birthTime"
+                               type="text" class="date form_date input-group form-control" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="userPwd">password</label>
+                        <input name="user_pwd" id="userPwd" type="password" class="form-control" required/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="department">department</label>
+                        <select class="form-control" name="dept.dept_id" id="department" required>
+                            <option th:each="dept : ${depts}"
+                                    th:value="${dept.dept_id}" th:text="${dept.dept_name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="company">company</label>
+                        <select class="form-control" name="tbCompany.companyId" id="company" required>
+                            <option th:each="company : ${companys}"
+                                    th:value="${company.companyId}" th:text="${company.companyname}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="status">status</label>
+                    <input class="form-control" name="status.status" id="status"/>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="statusStrat">status start</label>
+                        <input autoComplete='off' name="start_time1" data-link-field="dtp_input2" id="statusStrat"
+                               type="text" class="date form_date input-group form-control" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="statusEnd">status end</label>
+                        <input autoComplete='off' name="end_time1" data-link-field="dtp_input2" id="statusEnd"
+                               type="text" class="date form_date input-group form-control" required/>
+                    </div>
+                </div>
 
-		</script>
+                <button class="btn btn-primary" type="submit">增加</button>
+            </form>
+        </main>
+    </div>
+</div>
 
-	</body>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" th:src="@{/js/jquery-1.9.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+
+<!-- Icons -->
+<script type="text/javascript" th:src="@{/js/feather.min.js}"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.fr.js}"></script>
+<script>
+    $(function () {
+        $('.form_date').datetimepicker({
+            format: "yyyy-mm-dd",
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+    })
+</script>
+
+</body>
 
 </html>

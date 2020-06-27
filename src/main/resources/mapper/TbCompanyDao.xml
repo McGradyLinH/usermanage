@@ -67,4 +67,12 @@
         delete from user_manager.tb_company where company_id = #{companyId}
     </delete>
 
+    <!--查询单个通过名称-->
+    <select id="queryByName" resultMap="TbCompanyMap">
+        select
+          company_id, companyName, companyLocation
+        from user_manager.tb_company
+        where companyName = #{companyName}
+    </select>
+
 </mapper>
