@@ -1,6 +1,8 @@
 package com.jc.usermanage.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jc.usermanage.domain.*;
 import com.jc.usermanage.listener.UploadDataListener;
 import com.jc.usermanage.service.TbCompanyService;
@@ -23,9 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.context.request.async.WebAsyncTask;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,7 +37,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 
 /**
  * @author LinXing
@@ -49,7 +48,8 @@ import java.util.concurrent.Callable;
 @Controller
 public class EmpController {
     private static final Logger logger = LoggerFactory.getLogger(EmpController.class);
-
+    //一页的默认大小
+    private static final Integer NUMS = 10;
 
     @Autowired
     private TbUserService tbUserService;
@@ -62,14 +62,21 @@ public class EmpController {
 
     @ApiOperation("根据登录管理员的公司获取相应公司的所有成员")
     @GetMapping("/emps")
-    public String emps(HttpSession session, Model model) {
+    public String emps(HttpSession session, Model model, Integer pages) {
         String companyid = (String) session.getAttribute("companyid");
         if (StringUtils.isEmpty(companyid)) {
             model.addAttribute("msg", "请先登录");
             return "redirect:/login";
         }
+        if (Objects.isNull(pages)) {
+            pages = 1;
+        }
+        PageHelper.startPage(pages, NUMS);
         List<Account> accounts = tbUserService.queryAllAccount(companyid);
+        PageInfo<Account> pageInfo = new PageInfo<>(accounts);
+
         model.addAttribute("emps", accounts);
+        model.addAttribute("pages", pageInfo);
         return "emp/emps";
     }
 
@@ -148,21 +155,18 @@ public class EmpController {
         return new CommonResult<>(HttpServletResponse.SC_BAD_REQUEST, "新增用户发生错误！");
     }
 
-    @ApiOperation("上传用户的Excel，异步上传excel")
+    @ApiOperation("上传用户的Excel")
     @PostMapping("/emp/upload")
-    public WebAsyncTask uploadEmps(MultipartFile empExcel) {
-        Callable<String> callable = () -> {
-            UploadDataListener listener = new UploadDataListener(tbUserService, tbCompanyService);
-            try {
-                //读取数据时存入到数据库中
-                EasyExcel.read(empExcel.getInputStream(), UploadData.class, listener).sheet().doRead();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "redirect:/emps";
-        };
+    public String uploadEmps(MultipartFile empExcel) {
+        UploadDataListener listener = new UploadDataListener(this.tbUserService, this.tbCompanyService);
+        try {
+            //读取数据时存入到数据库中
+            EasyExcel.read(empExcel.getInputStream(), UploadData.class, listener).sheet().doRead();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        return new WebAsyncTask(callable);
+        return "redirect:/emps";
     }
 
 }

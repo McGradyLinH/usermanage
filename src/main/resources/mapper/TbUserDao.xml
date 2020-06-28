@@ -84,8 +84,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="user_id" useGeneratedKeys="true">
-        insert into user_manager.tb_user(user_dept_id, user_info_id, user_status_id)
-        values (#{user_dept_id}, #{user_info_id}, #{user_status_id})
+        insert into user_manager.tb_user(user_dept_id, user_info_id, user_status_id, user_company_id)
+        values (#{user_dept_id}, #{user_info_id}, #{user_status_id}, #{user_company_id})
     </insert>
 
     <!--通过主键修改数据-->
@@ -113,10 +113,10 @@
     <!--查询所有用户的所有信息-->
     <select id="queryAllAccount" resultMap="accountMap">
         SELECT
-            tu.user_id,
-            td.*, tui.*, ts.*, tc.*
+        tu.user_id,
+        td.*, tui.*, ts.*, tc.*
         FROM
-            user_manager.tb_user tu
+        user_manager.tb_user tu
         LEFT JOIN user_manager.tb_dept td ON tu.user_dept_id = td.dept_id
         LEFT JOIN user_manager.tb_user_info tui ON tu.user_info_id = tui.user_info_id
         LEFT JOIN user_manager.tb_status ts ON tu.user_status_id = ts.status_id

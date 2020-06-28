@@ -73,11 +73,12 @@ public class TbUserServiceImpl implements TbUserService {
      * @param account 实例对象
      * @return 实例对象
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public User insert(Account account) {
         User user = new User();
         user.setUser_dept_id(account.getDept().getDept_id());
+        user.setUser_company_id(account.getTbCompany().getCompanyId());
         UserInfo info = account.getInfo();
         tbUserInfoDao.insert(info);
         user.setUser_info_id(info.getUser_info_id());
@@ -99,10 +100,11 @@ public class TbUserServiceImpl implements TbUserService {
      * @return 实例对象
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void update(Account account) {
         User user = new User();
         user.setUser_dept_id(account.getDept().getDept_id());
+        user.setUser_company_id(account.getTbCompany().getCompanyId());
         user.setUser_id(account.getUser_id());
         this.tbUserDao.update(user);
         //修改emp基本信息
@@ -124,7 +126,7 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Account login(String phone, String pwd) {
         UserInfo userInfo = new UserInfo();
         Account account = new Account();
@@ -159,5 +161,31 @@ public class TbUserServiceImpl implements TbUserService {
     @Override
     public Account queryByUserId(Integer userId) {
         return tbUserDao.queryByUserId(userId);
+    }
+
+    /**
+     * excel 导入使用的添加方法
+     * @param account 人员信息
+     * @return 是否成功
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int insertapart(Account account) {
+        User user = new User();
+        if (null != account.getTbCompany()){
+            user.setUser_company_id(account.getTbCompany().getCompanyId());
+        }
+        UserInfo info = account.getInfo();
+        tbUserInfoDao.insert(info);
+        user.setUser_info_id(info.getUser_info_id());
+        Status status = account.getStatus();
+        tbStatusDao.insert(status);
+        user.setUser_status_id(status.getStatus_id());
+        int insert = this.tbUserDao.insert(user);
+        if (insert == 0) {
+            logger.error("新增失败！");
+            return 0;
+        }
+        return 1;
     }
 }

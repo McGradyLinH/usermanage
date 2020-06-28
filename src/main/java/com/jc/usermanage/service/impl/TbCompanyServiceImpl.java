@@ -42,6 +42,11 @@ public class TbCompanyServiceImpl implements TbCompanyService {
         return this.tbCompanyDao.queryAllByLimit(offset, limit);
     }
 
+    @Override
+    public List<TbCompany> queryAll(TbCompany tbCompany) {
+        return this.tbCompanyDao.queryAll(tbCompany);
+    }
+
     /**
      * 新增数据
      *
@@ -75,5 +80,10 @@ public class TbCompanyServiceImpl implements TbCompanyService {
     @Override
     public boolean deleteById(Integer companyId) {
         return this.tbCompanyDao.deleteById(companyId) > 0;
+    }
+
+    @Override
+    public TbCompany queryByName(String companyName) {
+        return this.tbCompanyDao.queryByName(companyName);
     }
 }

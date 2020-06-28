@@ -23,7 +23,7 @@
 						<input type="hidden" name="user_id" th:value="${emp.user_id}"/>
 						<input type="hidden" name="info.user_info_id" th:value="${emp.info.user_info_id}"/>
 						<input type="hidden" name="status.status_id" th:value="${emp.status.status_id}"/>
-						<!--<input type="hidden" name="tbCompany.companyId" th:value="${emp.tbCompany.companyId}"/>-->
+						<input type="hidden" name="tbCompany.companyId" th:value="${emp.tbCompany.companyId}"/>
 						<div class="form-group">
 							<label for="lastName">name</label>
 							<input type="text" name="info.name" th:value="${emp.info.name}" class="form-control" id="lastName">
@@ -42,7 +42,7 @@
 						<div class="form-group">
 							<label for="department">department</label>
 							<select class="form-control" name="dept.dept_id" id="department">
-								<option th:selected="${emp.dept.dept_id}==${dept.dept_id}" th:each="dept : ${depts}"
+								<option th:selected="${emp.dept}==null?'':${emp.dept.dept_id} == ${dept.dept_id}" th:each="dept : ${depts}"
 										th:value="${dept.dept_id}" th:text="${dept.dept_name}"></option>
 							</select>
 						</div>
