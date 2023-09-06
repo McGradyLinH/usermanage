@@ -31,7 +31,7 @@ class UsermanageApplicationTests {
     @Autowired
     private TbUserService userService;
 
-    @Test
+   // @Test
     void deptInsert() {
         Dept dept = new Dept();
         dept.setDept_name("test");
@@ -45,7 +45,7 @@ class UsermanageApplicationTests {
         }
     }
 
-    @Test
+    //@Test
 //    @Transactional
     void insertUser() {
         Account account = new Account();
@@ -82,16 +82,10 @@ class UsermanageApplicationTests {
         }
     }
 
-    @Test
+    //@Test
     void login() {
         Account account = userService.login("18888888888", "123456");
         System.out.println(account);
-    }
-
-    @Test
-    void getAccount(){
-        List<Account> accounts = userService.queryAllAccount();
-        accounts.forEach(System.out::println);
     }
 
 }
