@@ -3,9 +3,6 @@ spring:
     name: user_manage
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://49.233.77.228:3316?serverTimezone=PRC
-#    username: linxing
-#    password: Hmlx123.
     url: jdbc:mysql://localhost:3306?serverTimezone=PRC
     username: root
     password: 123456
